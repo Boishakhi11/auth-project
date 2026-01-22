@@ -4,7 +4,7 @@ import ActiveLink from "../ActiveLink/ActiveLink";
 
 const Navbar = () => {
   return (
-    <div>
+    <div className=" bg-cyan-400">
       <MyContainer className="flex justify-between items-center">
         <figure>
           <img className="w-12 h-12" src="./Logo.png" alt="logo image"></img>
