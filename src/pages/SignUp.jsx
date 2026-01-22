@@ -14,8 +14,8 @@ const SignUp = () => {
     e.preventDefault();
     const email = e.target.email?.value;
     const password = e.target.password?.value;
+    
     // password check
-
     const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
     if (!regExp.test(password)) {
