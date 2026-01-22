@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import MyContainer from "../componets/MyContainer/MyContainer";
 import { Link } from "react-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 
 const SignUp = () => {
+  const [show, setShow] = useState(false);
+
   const handleSignUp = (e) => {
     e.preventDefault();
     const email = e.target.email?.value;
@@ -55,17 +58,19 @@ const SignUp = () => {
                       placeholder="Email"
                     />
                   </div>
-                  <div>
+                  <div className="relative">
                     <label className="label">Password</label>
                     <input
-                      type="password"
+                      type={show ? "text" : "password"}
                       name="password"
                       className="input"
                       placeholder="Password"
                     />
-                    <span>
-                      {" "}
-                      <FaEye />{" "}
+                    <span
+                      onClick={() => setShow(!show)}
+                      className="absolute right-[24px] top-[33px] cursor-pointer"
+                    >
+                      {show ? <FaEyeSlash /> : <FaEye />}
                     </span>
                   </div>
 
