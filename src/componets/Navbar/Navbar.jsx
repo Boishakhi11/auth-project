@@ -1,13 +1,28 @@
 import React from "react";
+import MyContainer from "../MyContainer/MyContainer";
+import ActiveLink from "../ActiveLink/ActiveLink";
 
 const Navbar = () => {
   return (
     <div>
-      <div className="flex gap-3 items-center">
-        <img className="w-12 h-12" src="./Logo.png" alt="logo image"></img>
-        <h1>Welcome</h1>
-      </div>
-      <btn></btn>
+      <MyContainer className="flex justify-between items-center">
+        <figure>
+          <img className="w-12 h-12" src="./Logo.png" alt="logo image"></img>
+        </figure>
+        <ul className="flex justify-between items-center gap-3">
+          <li>
+            <ActiveLink to={"/home"}> Home </ActiveLink>
+          </li>
+          <li>
+            <ActiveLink to={"/about-us"}>About</ActiveLink>
+          </li>
+          <li>
+            <ActiveLink to={"/contact-us"}>Contact</ActiveLink>
+          </li>
+        </ul>
+
+        <button className="btn btn-accent">LogIn</button>
+      </MyContainer>
     </div>
   );
 };
