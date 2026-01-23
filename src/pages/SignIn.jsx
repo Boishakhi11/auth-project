@@ -1,15 +1,35 @@
 import React, { useState } from "react";
 import MyContainer from "../componets/MyContainer/MyContainer";
 import { Link } from "react-router";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaGoogle } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
+
+const googleProvider = new GoogleAuthProvider();
 
 const SignIn = () => {
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
+
+  const handleGoogleSignIn = (e) => {
+    e.preventDefault();
+    signInWithPopup(auth, googleProvider)
+      .then((userCredential) => {
+        setUser(userCredential.user);
+        console.log(userCredential.user);
+        toast.success("Succesfully Login");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -33,8 +53,22 @@ const SignIn = () => {
         console.log(userCredential.user);
         toast.success("Succesfully Login");
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        if (error.code === "auth/invalid-email") {
+          return "Please enter a valid email address.";
+        } else if (error.code === "auth/user-not-found") {
+          return "No account found with this email.";
+        } else if (error.code === "auth/wrong-password") {
+          return "Incorrect password.";
+        } else if (error.code === "auth/user-disabled") {
+          return "This account has been disabled.";
+        } else if (error.code === "auth/too-many-requests") {
+          return "Too many attempts. Try again later.";
+        } else if (error.code === "auth/network-request-failed") {
+          return "Network error. Check your internet connection.";
+        } else {
+          return "Login failed. Please try again.";
+        }
       });
   };
 
@@ -114,8 +148,16 @@ const SignIn = () => {
                       <a className="link link-hover">Forgot password?</a>
                     </div>
                     <button className="btn btn-success mt-4">Login</button>
+                    <p className="text-gray-500 mt-2.5">Or Sign in with</p>
+                    <button
+                      type="button"
+                      onClick={handleGoogleSignIn}
+                      className="btn btn-neutral mt-4 cursor-pointer text-center"
+                    >
+                      <FaGoogle /> Login With Google
+                    </button>
 
-                    <div className=" ">
+                    <div className="mt-2 ">
                       <p className="">
                         Do not have a Account?{" "}
                         <Link
