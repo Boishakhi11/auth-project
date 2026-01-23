@@ -14,7 +14,7 @@ const SignUp = () => {
     e.preventDefault();
     const email = e.target.email?.value;
     const password = e.target.password?.value;
-    
+
     // password check
     const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
@@ -36,9 +36,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-cyan-200">
+    <div className="bg-green-200">
       <MyContainer>
-        <div className="hero bg-cyan-200 min-h-screen p-8">
+        <div className="hero bg-green-200 min-h-screen p-8">
           <div className="hero-content flex-col lg:flex-row-reverse lg:gap-20">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold text-gray-500">Register Now</h1>
@@ -46,7 +46,7 @@ const SignUp = () => {
                 Register to be one of our member
               </p>
             </div>
-            <div className="card w-full bg-cyan-100 max-w-sm shrink-0 shadow-2xl">
+            <div className="card w-full bg-green-100 max-w-sm shrink-0 shadow-2xl">
               <div className="card-body">
                 <form onSubmit={handleSignUp}>
                   <div>
@@ -75,7 +75,7 @@ const SignUp = () => {
                   </div>
 
                   <div>
-                    <button className="btn btn-accent mt-4">Sign Up</button>
+                    <button className="btn btn-success mt-4">Sign Up</button>
                   </div>
                 </form>
                 <div className=" ">

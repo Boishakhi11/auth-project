@@ -4,10 +4,11 @@ import { Link } from "react-router";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 
 const SignIn = () => {
+  const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
 
   const handleSignIn = (e) => {
@@ -28,8 +29,8 @@ const SignIn = () => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
+        setUser(userCredential.user);
+        console.log(userCredential.user);
         toast.success("Succesfully Login");
       })
       .catch((e) => {
@@ -37,10 +38,21 @@ const SignIn = () => {
       });
   };
 
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("Sign Out");
+        setUser(null);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
   return (
-    <div className="bg-cyan-200">
+    <div className="bg-green-200">
       <MyContainer>
-        <div className="hero bg-cyan-200 min-h-screen p-8">
+        <div className="hero bg-green-200 min-h-screen p-8">
           <div className="hero-content flex-col lg:flex-row-reverse lg:gap-20">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold text-gray-500">
@@ -50,51 +62,72 @@ const SignIn = () => {
                 Login into our sytem to go to dashboard
               </p>
             </div>
-            <div className="card w-full bg-cyan-100 max-w-sm shrink-0 shadow-2xl">
+            <div className="card w-full bg-green-100 max-w-sm shrink-0 shadow-2xl">
               <div className="card-body">
-                <form onSubmit={handleSignIn}>
-                  <div>
-                    <label className="label">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      className="input"
-                      placeholder="Email"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <label className="label">Password</label>
-                    <input
-                      type={show ? "text" : "password"}
-                      name="password"
-                      className="input"
-                      placeholder="Password"
-                    />
-                    <span
-                      onClick={() => setShow(!show)}
-                      className="absolute right-[24px] top-[33px] cursor-pointer"
+                {user ? (
+                  <div className="text-center space-y-2">
+                    <img
+                      className="h-20 w-20 rounded-full mx-auto"
+                      src={
+                        user?.photoURL ||
+                        "https://www.freepik.com/premium-vector/user-icon-vector_251942830.htm"
+                      }
+                    ></img>
+                    <h1>{user?.displayName}</h1>
+                    <h1>{user?.email}</h1>
+                    <button
+                      onClick={handleSignOut}
+                      className="btn btn-success mt-4"
                     >
-                      {show ? <FaEyeSlash /> : <FaEye />}
-                    </span>
+                      Log Out
+                    </button>
                   </div>
+                ) : (
+                  <form onSubmit={handleSignIn}>
+                    <div>
+                      <label className="label">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        className="input"
+                        placeholder="Email"
+                      />
+                    </div>
 
-                  <div>
-                    <a className="link link-hover">Forgot password?</a>
-                  </div>
-                  <button className="btn btn-accent mt-4">Login</button>
-                </form>
-                <div className=" ">
-                  <p className="">
-                    Do not have a Account?{" "}
-                    <Link
-                      className="text-blue-600 underline underline-offset-2 cursor-pointer "
-                      to={"/sign-up"}
-                    >
-                      Register
-                    </Link>
-                  </p>
-                </div>
+                    <div className="relative">
+                      <label className="label">Password</label>
+                      <input
+                        type={show ? "text" : "password"}
+                        name="password"
+                        className="input"
+                        placeholder="Password"
+                      />
+                      <span
+                        onClick={() => setShow(!show)}
+                        className="absolute right-[24px] top-[33px] cursor-pointer"
+                      >
+                        {show ? <FaEyeSlash /> : <FaEye />}
+                      </span>
+                    </div>
+
+                    <div>
+                      <a className="link link-hover">Forgot password?</a>
+                    </div>
+                    <button className="btn btn-success mt-4">Login</button>
+
+                    <div className=" ">
+                      <p className="">
+                        Do not have a Account?{" "}
+                        <Link
+                          className="text-blue-600 underline underline-offset-2 cursor-pointer "
+                          to={"/sign-up"}
+                        >
+                          Register
+                        </Link>
+                      </p>
+                    </div>
+                  </form>
+                )}
               </div>
             </div>
           </div>
